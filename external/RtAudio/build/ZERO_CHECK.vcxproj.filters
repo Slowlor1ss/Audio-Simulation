@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Projects\Audio-Simulation\external\RtAudio\build\CMakeFiles\b51d8a8e6aacd2ec09ad251b2ce2053d\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Projects\Audio-Simulation\external\RtAudio\build\RtAudioConfig.cmake.in">
+      <Filter>Buildsystem Input Files\build</Filter>
+    </None>
+    <None Include="D:\Projects\Audio-Simulation\external\RtAudio\cmake\RtAudioConfigUninstall.cmake.in">
+      <Filter>Buildsystem Input Files\cmake</Filter>
+    </None>
+    <None Include="D:\Projects\Audio-Simulation\external\RtAudio\rtaudio.pc.in">
+      <Filter>Buildsystem Input Files</Filter>
+    </None>
+    <None Include="D:\Projects\Audio-Simulation\external\RtAudio\tests\CMakeLists.txt">
+      <Filter>Buildsystem Input Files\tests</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{3CCF2E9B-A699-3272-9D68-0C86736B691E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{756801EA-AA17-33F1-86CC-BFBA025ACF5D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files">
+      <UniqueIdentifier>{6051A41D-E4DD-3991-A0D1-A8B1A96A338F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build">
+      <UniqueIdentifier>{582A5B1E-7870-35EE-81BB-B18C08CFD4F7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\cmake">
+      <UniqueIdentifier>{EE8A0B3F-9033-3B8A-9EDA-83BD82ECD477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\tests">
+      <UniqueIdentifier>{67281A9D-B9CD-3D0E-A74E-DD39E07B8D31}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

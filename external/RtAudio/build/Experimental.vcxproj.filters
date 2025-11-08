@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Projects\Audio-Simulation\external\RtAudio\build\CMakeFiles\b51d8a8e6aacd2ec09ad251b2ce2053d\Experimental.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Projects\Audio-Simulation\external\RtAudio\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Projects\Audio-Simulation\external\RtAudio\build\CMakeFiles\Experimental" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{3CCF2E9B-A699-3272-9D68-0C86736B691E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+^D:\PROJECTS\AUDIO-SIMULATION\EXTERNAL\RTAUDIO\TESTS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Projects/Audio-Simulation/external/RtAudio -BD:/Projects/Audio-Simulation/external/RtAudio/build --check-stamp-file D:/Projects/Audio-Simulation/external/RtAudio/build/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
