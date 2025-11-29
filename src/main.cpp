@@ -1,81 +1,66 @@
+#include "Application.h"
 #include <iostream>
-#include <cmath>
-#include <SFML/Graphics.hpp>
-#include "RtAudio.h"
+#include "audio/sources/MicrophoneSource.h"
+#include "audio/sources/WavFileSource.h"
 
-constexpr double M_PI = 3.1415;
+//#define TEST_MIC
+#define TEST_WAV
+
+#if defined(TEST_MIC) && defined(TEST_WAV)
+    #error "Cannot define both TEST_MIC and TEST_WAV at the same time, duh..."
+#endif
 
 int main()
 {
-    // ----- Test SFML -----
-    sf::RenderWindow window(sf::VideoMode(sf::Vector2u(400, 200)), "SFML Test");
-    sf::CircleShape shape(50.f);
-    shape.setFillColor(sf::Color::Green);
-
-    std::cout << "SFML window created with a circle (hopefully). Close window to continue.\n";
-
-    while (window.isOpen()) 
+    Application app(1280, 720);
+    
+    if (!app.initialize())
     {
-        while (auto eventOpt = window.pollEvent()) 
-        {
-		    sf::Event event = *eventOpt;
-		    if (event.is<sf::Event::Closed>())
-		        window.close();
-		}
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-
-    // ----- Test RtAudio -----
-    std::cout << "Testing RtAudio...\n";
-
-    RtAudio audio;
-    if (audio.getDeviceCount() < 1) 
-    {
-        std::cerr << "No audio devices found!\n";
+        std::cerr << "Failed to initialize application\n";
         return 1;
     }
 
-    const unsigned int sampleRate = 44100;
-    unsigned int bufferFrames = 256;
-
-    // Simple callback that generates a sine wave
-    auto callback = [](void* outputBuffer, void*, unsigned int nBufferFrames,
-                       double, RtAudioStreamStatus, void* userData) -> int
-	{
-	    const auto buffer = static_cast<float*>(outputBuffer);
-	    const auto phase = static_cast<double*>(userData);
-		const double frequency = 440.0;
-	    for (unsigned int i = 0; i < nBufferFrames; i++) 
-        {
-		    buffer[i] = static_cast<float>(0.3 * sin(*phase));
-            *phase += 2.0 * M_PI * frequency / sampleRate;
-            if (*phase > 2.0 * M_PI) *phase -= 2.0 * M_PI;
-        }
-        return 0;
-    };
-
-    double phase = 0.0;
-    RtAudio::StreamParameters parameters;
-    parameters.deviceId = audio.getDefaultOutputDevice();
-    parameters.nChannels = 2; // Stereo
-
-    try {
-        audio.openStream(&parameters, nullptr, RTAUDIO_FLOAT32, sampleRate,
-                         &bufferFrames, callback, &phase);
-        audio.startStream();
-
-        std::cout << "Playing a short sine wave. Press Enter to stop.\n";
-        std::cin.get();
-
-        audio.stopStream();
-        audio.closeStream();
-    } catch (std::exception& e) {
-        std::cerr << "RtAudio error: " << e.what() << "\n";
-        return 1;
+#if defined(TEST_MIC) 
+    // ========== MICROPHONE TEST ==========
+    const auto micSource = std::make_shared<MicrophoneSource>(44100, 512);
+    if (micSource->initialize())
+    {
+        micSource->setVolume(1.0f);
+        app.getAudioEngine().addSource(micSource);
+        std::cout << "Microphone enabled - speak up!\n";
+        std::cout << "Press ESC to quit\n";
     }
+    else
+    {
+        std::cerr << "Failed to initialize microphone\n";
+    }
+#endif
 
-    std::cout << "Tests complete.\n";
+#if defined(TEST_WAV)
+    // ========== WAV FILE TEST ==========
+    auto wavSource = std::make_shared<WavFileSource>();
+    if (wavSource->loadFile("resources/400HzTestTone.wav"))
+    {
+        wavSource->setVolume(0.5f);  // Adjust volume
+        wavSource->setLooping(true);  // Loop the audio
+        app.getAudioEngine().addSource(wavSource);
+        std::cout << "WAV file loaded and playing\n";
+    }
+    else
+    {
+        std::cerr << "Failed to load WAV file\n";
+    }
+#endif
+    
+    app.run();
+
+#if definied(TEST_MIC)
+    // Cleanup mic
+    if (micSource)
+    {
+        micSource->shutdown();
+    }
+#endif
+    
     return 0;
 }

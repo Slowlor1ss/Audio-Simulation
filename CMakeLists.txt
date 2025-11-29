@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 23)
 # source files
 set(SOURCE_FILES
     src/main.cpp
+    src/application.cpp
+    src/application.h
 )
 
 set(PHYSICS_FILES
@@ -24,6 +26,13 @@ set(AUDIO_FILES
     src/audio/AudioAnalyzer.h
 )
 
+set(AUDIO_SOURCES_FILES
+    src/audio/sources/WavFileSource.cpp
+    src/audio/sources/WavFileSource.h
+    src/audio/sources/MicrophoneSource.cpp
+    src/audio/sources/MicrophoneSource.h
+)
+
 set(VIS_FILES
     src/visualization/Renderer.cpp
     src/visualization/Renderer.h
@@ -38,12 +47,14 @@ add_executable(AudioSimulation
     ${SOURCE_FILES}
     ${PHYSICS_FILES}
     ${AUDIO_FILES}
+    ${AUDIO_SOURCES_FILES}
     ${VIS_FILES}
 )
 
 # Create Visual Studio filters
 source_group("Physics" FILES ${PHYSICS_FILES})
 source_group("Audio" FILES ${AUDIO_FILES})
+source_group("Audio/Sources" FILES ${AUDIO_SOURCES_FILES})
 source_group("Visualization" FILES ${VIS_FILES})
 
 
@@ -61,6 +72,8 @@ target_link_libraries(AudioSimulation PRIVATE
     "${CMAKE_SOURCE_DIR}/external/SFML/lib/sfml-graphics.lib"
     "${CMAKE_SOURCE_DIR}/external/SFML/lib/sfml-window.lib"
     "${CMAKE_SOURCE_DIR}/external/SFML/lib/sfml-system.lib"
+    "${CMAKE_SOURCE_DIR}/external/SFML/lib/freetype.lib"
+    "${CMAKE_SOURCE_DIR}/external/SFML/lib/freetyped.lib"
 )
 
 # Copy the DLL automatically after build
@@ -96,3 +109,16 @@ add_custom_command(TARGET AudioSimulation POST_BUILD
         $<TARGET_FILE_DIR:AudioSimulation>
 )
 
+# Copy the resources folder next to the executable
+add_custom_command(TARGET AudioSimulation POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources"
+        "$<TARGET_FILE_DIR:AudioSimulation>/resources"
+)
+
+# Copy resources to the root build folder (VS working directory?)
+add_custom_command(TARGET AudioSimulation POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources"
+        "${CMAKE_BINARY_DIR}/resources"
+)
